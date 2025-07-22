@@ -3,50 +3,48 @@ package data;
 import java.io.Serializable;
 
 /**
- * Classe astratta che rappresenta un attributo generico, caratterizzato da un nome simbolico
- * e un indice numerico. Gli attributi sono usati per descrivere le "colonne" o
- * le caratteristiche dei dati in un dataset (ad esempio, in una tupla).
+ * Rappresenta un attributo generico, caratterizzato da un nome e un indice.
  * <p>
- * Questa classe è la base per tipi di attributi più specifici, come
- * {@link DiscreteAttribute} e {@link ContinuousAttribute}.
+ * Questa classe astratta funge da base per tipi di attributi più specifici,
+ * come {@link DiscreteAttribute} e {@link ContinuousAttribute}. La sua visibilità
+ * è volutamente {@code package-private} per controllare come viene estesa
+ * all'interno del suo package.
+ * </p>
  * <p>
- * Implementa {@link java.io.Serializable} per consentire la serializzazione
- * delle sue sottoclassi. Poiché i campi {@code name} (String) e {@code index} (int)
- * sono di tipi primitivi/serializzabili, la serializzazione di default è generalmente sufficiente.
+ * Implementa {@link Serializable} per consentire la persistenza delle sue sottoclassi.
  * </p>
  *
  * @see DiscreteAttribute
  * @see ContinuousAttribute
- * @see java.io.Serializable
  */
 abstract class Attribute implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    /**
+     * Identificativo di versione per la serializzazione.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * Il nome simbolico dell'attributo (es. "Outlook", "Temperature").
-     * Questo campo è incluso nella forma serializzata di default della classe.
      * @serial
      */
     private String name;
 
     /**
-     * L'identificatore numerico (indice) dell'attributo.
-     * Può rappresentare, ad esempio, la posizione della colonna dell'attributo
-     * all'interno di un dataset o di una tupla.
-     * Questo campo è incluso nella forma serializzata di default della classe.
+     * L'identificatore numerico (indice) dell'attributo, che ne rappresenta la posizione.
      * @serial
      */
     private int index;
 
     /**
-     * Costruttore protetto per la classe {@code Attribute}.
-     * Inizializza il nome e l'indice dell'attributo.
-     * Viene tipicamente invocato dai costruttori delle sottoclassi.
+     * Costruisce un nuovo attributo con il nome e l'indice specificati.
+     * <p>
+     * Essendo un costruttore {@code protected}, è destinato a essere chiamato
+     * dalle sottoclassi.
+     * </p>
      *
-     * @param name  Il nome simbolico da assegnare all'attributo. Non dovrebbe essere nullo.
-     * @param index L'identificatore numerico (indice) da assegnare all'attributo.
-     * Dovrebbe essere un valore non negativo.
+     * @param name  Il nome simbolico dell'attributo (non nullo).
+     * @param index L'indice numerico dell'attributo (non negativo).
      */
     protected Attribute(String name, int index) {
         this.name = name;
@@ -56,14 +54,14 @@ abstract class Attribute implements Serializable {
     /**
      * Restituisce il nome simbolico dell'attributo.
      *
-     * @return Il nome dell'attributo (es. "Temperature").
+     * @return Il nome dell'attributo.
      */
     protected String getName() {
         return this.name;
     }
 
     /**
-     * Restituisce l'identificatore numerico (indice) dell'attributo.
+     * Restituisce l'indice numerico dell'attributo.
      *
      * @return L'indice dell'attributo.
      */
@@ -72,10 +70,12 @@ abstract class Attribute implements Serializable {
     }
 
     /**
-     * Restituisce una rappresentazione testuale dell'attributo.
-     * Per default, questa implementazione restituisce il nome dell'attributo.
+     * Restituisce una rappresentazione testuale dell'attributo, che per default
+     * corrisponde al suo nome.
+     * <p>
      * Le sottoclassi possono sovrascrivere questo metodo per fornire una
      * rappresentazione più dettagliata (es. includendo il dominio dei valori).
+     * </p>
      *
      * @return Il nome dell'attributo.
      */

@@ -1,35 +1,42 @@
 package data;
 
 /**
- * Classe pubblica che rappresenta un attributo continuo.
- * Un attributo continuo è caratterizzato da un intervallo numerico (minimo e massimo).
+ * Rappresenta un attributo i cui valori sono numeri reali all'interno di un intervallo.
  * <p>
- * Estende la classe astratta {@link Attribute}.
+ * Questa classe estende {@link Attribute} per descrivere caratteristiche continue
+ * (es. temperatura, età, prezzo), definite da un valore minimo e uno massimo.
+ * Fornisce un metodo per normalizzare i valori in un intervallo standard [0, 1],
+ * operazione fondamentale per molti algoritmi di machine learning.
  * </p>
- * 
+ *
  * @see Attribute
  */
 public class ContinuousAttribute extends Attribute {
 
+    /**
+     * Identificativo di versione per la serializzazione.
+     */
     private static final long serialVersionUID = 1L;
 
-	/**
-     * Valore massimo dell'attributo continuo.
+    /**
+     * Il valore massimo del dominio dell'attributo.
+     * @serial
      */
     private double max;
 
     /**
-     * Valore minimo dell'attributo continuo.
+     * Il valore minimo del dominio dell'attributo.
+     * @serial
      */
     private double min;
 
     /**
-     * Costruttore della classe ContinuousAttribute.
+     * Costruisce un nuovo attributo continuo.
      *
-     * @param name  il nome simbolico dell'attributo
-     * @param index l'identificatore numerico dell'attributo
-     * @param min   il valore minimo che l'attributo può assumere
-     * @param max   il valore massimo che l'attributo può assumere
+     * @param name  Il nome simbolico dell'attributo (es. "Temperatura").
+     * @param index L'identificatore numerico (indice) dell'attributo.
+     * @param min   Il valore minimo che l'attributo può assumere nel suo dominio.
+     * @param max   Il valore massimo che l'attributo può assumere nel suo dominio.
      */
     public ContinuousAttribute(String name, int index, double min, double max) {
         super(name, index);
@@ -38,10 +45,18 @@ public class ContinuousAttribute extends Attribute {
     }
 
     /**
-     * Restituisce il valore normalizzato (scalato) dell'attributo continuo rispetto al suo intervallo [min, max].
+     * Normalizza un valore numerico nell'intervallo [0, 1] basandosi sul dominio [min, max] dell'attributo.
+     * <p>
+     * La normalizzazione viene calcolata con la formula: {@code (v - min) / (max - min)}.
+     * Se il valore {@code v} è al di fuori del dominio, il risultato sarà minore di 0 o maggiore di 1.
+     * </p>
+     * <p>
+     * <b>Attenzione:</b> se {@code max} e {@code min} sono uguali, questo metodo può restituire
+     * {@code Infinity} o {@code NaN} a causa di una divisione per zero.
+     * </p>
      *
-     * @param v il valore da normalizzare
-     * @return il valore scalato nell'intervallo [0, 1]
+     * @param v Il valore da normalizzare.
+     * @return Il valore normalizzato (scalato) nell'intervallo [0, 1].
      */
     public double getScaledValue(double v) {
         return (v - this.min) / (this.max - this.min);

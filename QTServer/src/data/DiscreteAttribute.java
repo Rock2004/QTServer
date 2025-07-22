@@ -4,45 +4,44 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
- * Classe pubblica che rappresenta un attributo discreto.
- * Il dominio di un attributo discreto è un insieme ordinato e univoco di stringhe.
+ * Rappresenta un attributo discreto, i cui valori appartengono a un dominio finito di stringhe.
  * <p>
- * Estende la classe astratta {@link Attribute} e implementa {@link Iterable<String>}
- * per consentire l'iterazione diretta sui valori del suo dominio.
- * Inoltre utilizza un contenitore di tipo {@link TreeSet} per memorizzare i valori.
+ * Questa classe estende {@link Attribute} per descrivere caratteristiche categoriche
+ * (es. un attributo "Outlook" con valori {"Sunny", "Rainy", "Overcast"}).
+ * Utilizza un {@link TreeSet} per memorizzare il dominio, garantendo che i valori
+ * siano unici e ordinati alfabeticamente.
  * </p>
- * 
- * @see Attribute
- * @see java.util.Iterator
- * @see java.util.TreeSet
+ * <p>
+ * Implementa {@link Iterable<String>} per consentire l'iterazione diretta sui valori del dominio.
+ * </p>
+ * * @see Attribute
  */
 public class DiscreteAttribute extends Attribute implements Iterable<String> {
-    
+
+    /**
+     * Identificativo di versione per la serializzazione.
+     */
     private static final long serialVersionUID = 1L;
-    
-	/**
-     * Contenitore di tipo {@link TreeSet} che memorizza i valori distinti (dominio) dell'attributo.
-     * L'uso di TreeSet garantisce che i valori siano unici e mantenuti in ordine naturale (alfabetico per le stringhe).
+
+    /**
+     * Insieme ordinato dei valori distinti (dominio) che l'attributo può assumere.
      */
     private TreeSet<String> values;
 
     /**
-     * Costruttore della classe {@code DiscreteAttribute}.
-     * Mantiene la segnatura originale che accetta un array di stringhe.
-     * I valori forniti vengono utilizzati per popolare un {@link TreeSet} interno,
-     * garantendo così l'unicità e l'ordinamento dei valori del dominio.
+     * Costruisce un nuovo attributo discreto a partire da un insieme di valori possibili.
+     * <p>
+     * I valori duplicati o nulli presenti nell'array di input verranno ignorati.
+     * </p>
      *
-     * @param name  il nome simbolico dell'attributo (ereditato da {@link Attribute})
-     * @param index l'identificatore numerico dell'attributo (ereditato da {@link Attribute})
-     * @param values array di stringhe che rappresenta i possibili valori del dominio dell'attributo.
-     *               Eventuali duplicati verranno ignorati e non inseriti nel {@code TreeSet}.
-     *               Se l'array è {@code null} o vuoto, il dominio dell'attributo sarà vuoto.
+     * @param name   Il nome simbolico dell'attributo (es. "Outlook").
+     * @param index  L'identificatore numerico (indice) dell'attributo.
+     * @param values Un array di stringhe che definisce il dominio dell'attributo.
      */
-
     public DiscreteAttribute(String name, int index, String[] values) {
         super(name, index);
         
-        this.values = new TreeSet<>(); 
+        this.values = new TreeSet<>();
 
         if (values != null) {
             for(int i = 0; i < values.length; i++) {
@@ -55,24 +54,24 @@ public class DiscreteAttribute extends Attribute implements Iterable<String> {
 
     /**
      * Restituisce il numero di valori distinti nel dominio dell'attributo.
-     * Corrisponde alla dimensione del {@link TreeSet} interno.
      *
-     * @return il numero di valori unici che questo attributo può assumere.
+     * @return La dimensione del dominio.
      */
     public int getNumberOfDistinctValues() {
         return values.size();
     }
 
     /**
-     * Fornisce un {@link Iterator} per scorrere i valori del dominio dell'attributo.
-     * I valori verranno restituiti secondo l'ordinamento naturale definito dal {@link TreeSet} (es. alfabetico).
-     * Questo metodo è richiesto dall'implementazione dell'interfaccia {@link Iterable<String>}.
+     * Restituisce un iteratore per scorrere i valori del dominio dell'attributo.
+     * <p>
+     * I valori sono restituiti in ordine naturale (alfabetico), come garantito dal {@link TreeSet}.
+     * </p>
      *
-     * @return un {@link Iterator<String>} sui valori del dominio.
+     * @return Un {@link Iterator} sui valori del dominio.
      */
-	@Override
-	public Iterator<String> iterator() {
-		return values.iterator();
-	}
+    @Override
+    public Iterator<String> iterator() {
+        return values.iterator();
+    }
 }
 

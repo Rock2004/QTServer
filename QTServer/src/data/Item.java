@@ -3,55 +3,49 @@ package data;
 import java.io.Serializable;
 
 /**
- * Classe astratta che modella un generico item, che rappresenta una coppia attributo-valore
- * (ad esempio, Outlook="Sunny" o Temperature=30.5).
+ * Modella un generico item come coppia attributo-valore (es. Outlook="Sunny").
  * <p>
- * Questa classe è destinata ad essere estesa da classi più specifiche
- * che rappresentano item discreti ({@link DiscreteItem}) e continui ({@link ContinuousItem}).
+ * Questa classe astratta è la base per item più specifici, come
+ * {@link DiscreteItem} e {@link ContinuousItem}. La sua visibilità è
+ * {@code package-private}, indicando una scelta di design per cui la sua
+ * estensione è controllata all'interno del package.
+ * </p>
  * <p>
- * Implementa {@link java.io.Serializable} per consentire la serializzazione
- * delle sue sottoclassi. Affinché la serializzazione funzioni correttamente,
- * anche i campi {@code attribute} e {@code value} (e le loro rispettive classi,
- * come {@link Attribute} e il tipo concreto di {@code value}) devono essere serializzabili.
- * Java genererà automaticamente un serialVersionUID se non definito esplicitamente.
+ * Implementa {@link Serializable} per consentire la persistenza delle sue sottoclassi.
  * </p>
  *
  * @see Attribute
  * @see DiscreteItem
  * @see ContinuousItem
- * @see java.io.Serializable
  */
 abstract class Item implements Serializable {
 
+    /**
+     * Identificativo di versione per la serializzazione.
+     */
     private static final long serialVersionUID = 1L;
 
-	/**
-     * L'attributo a cui questo item si riferisce.
-     * Ad esempio, potrebbe essere un'istanza di {@link DiscreteAttribute} o {@link ContinuousAttribute}.
-     * Questo campo è incluso nella forma serializzata di default della classe,
-     * assumendo che la classe concreta di {@link Attribute} sia serializzabile.
+    /**
+     * L'attributo a cui questo item si riferisce (es. un'istanza di {@link ContinuousAttribute}).
      * @serial
      */
     private Attribute attribute;
     
     /**
      * Il valore specifico assunto dall'attributo per questo item.
-     * Il tipo concreto di questo oggetto dipenderà dalla sottoclasse di {@code Item}
-     * (es. {@link String} per {@link DiscreteItem}, {@link Double} per {@link ContinuousItem}).
-     * Questo campo è incluso nella forma serializzata di default della classe,
-     * assumendo che il tipo concreto del valore sia serializzabile.
+     * <p>
+     * Il tipo concreto di questo oggetto dipenderà dalla sottoclasse
+     * (es. {@link String} per {@link DiscreteItem}).
+     * </p>
      * @serial
      */
     private Object value;
 
     /**
-     * Costruttore protetto per la classe {@code Item}.
-     * Viene tipicamente invocato dai costruttori delle sottoclassi.
+     * Costruisce un nuovo item associando un attributo a un valore.
      *
-     * @param attribute L'attributo (es. "Outlook", "Temperature") associato a questo item.
-     * Non dovrebbe essere nullo.
-     * @param value     Il valore (es. "Sunny", 30.5) assunto dall'attributo per questo item.
-     * Può essere nullo a seconda della logica delle sottoclassi.
+     * @param attribute L'attributo dell'item (es. "Temperatura").
+     * @param value Il valore dell'item (es. 30.5).
      */
     protected Item(Attribute attribute, Object value) {
         this.attribute = attribute;
@@ -68,9 +62,7 @@ abstract class Item implements Serializable {
     }
 
     /**
-     * Restituisce il valore grezzo ({@link Object}) associato a questo item.
-     * Il tipo effettivo di questo oggetto (es. String, Double) dipenderà
-     * dalla sottoclasse concreta di {@code Item}.
+     * Restituisce il valore ({@link Object}) associato a questo item.
      *
      * @return Il valore dell'item.
      */
@@ -79,15 +71,13 @@ abstract class Item implements Serializable {
     }
 
     /**
-     * Restituisce una rappresentazione testuale dell'item.
-     * Per default, questa implementazione restituisce la rappresentazione stringa
-     * del campo {@code value} dell'item.
-     * Le sottoclassi possono sovrascrivere questo metodo se è necessaria una
-     * rappresentazione differente.
+     * Restituisce una rappresentazione testuale del valore dell'item.
+     * <p>
+     * <b>Attenzione:</b> questa implementazione invoca {@code value.toString()}. Se il campo
+     * {@code value} è {@code null}, questo causerà una {@link NullPointerException}.
+     * </p>
      *
-     * @return Una stringa che rappresenta il valore dell'item. Se {@code value} è nullo,
-     * potrebbe lanciare una {@link NullPointerException} a seconda dell'implementazione
-     * di {@code value.toString()}.
+     * @return La rappresentazione in stringa del valore.
      */
     @Override
     public String toString() {
@@ -95,16 +85,14 @@ abstract class Item implements Serializable {
     }
 
     /**
-     * Metodo astratto per calcolare la distanza tra il valore di questo item
-     * e un altro valore fornito (tipicamente il valore di un altro item dello stesso attributo).
+     * Metodo astratto per calcolare la distanza tra questo item e un altro valore.
      * <p>
-     * L'implementazione concreta di questo metodo è demandata alle sottoclassi
-     * ({@link DiscreteItem}, {@link ContinuousItem}), poiché la logica di calcolo
-     * della distanza dipende dalla natura discreta o continua dell'attributo e del valore.
+     * L'implementazione è demandata alle sottoclassi {@link DiscreteItem} e
+     * {@link ContinuousItem}, poiché la metrica di distanza varia a seconda
+     * che l'attributo sia discreto o continuo.
      * </p>
      *
-     * @param a L'oggetto (generalmente un valore dello stesso tipo di quello contenuto in questo item)
-     * rispetto al quale calcolare la distanza.
+     * @param a L'oggetto rispetto al quale calcolare la distanza.
      * @return La distanza calcolata come valore {@code double}.
      */
     protected abstract double distance(Object a);

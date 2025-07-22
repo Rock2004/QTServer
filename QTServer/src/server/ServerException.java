@@ -11,8 +11,7 @@ package server;
  */
 public class ServerException extends Exception {
 
-    // Come discusso, il serialVersionUID può essere omesso, e la JVM ne genererà uno.
-    // private static final long serialVersionUID = 1L; 
+    private static final long serialVersionUID = 1L; 
 
     /**
      * Costruisce una nuova {@code ServerException} con un messaggio di default.
