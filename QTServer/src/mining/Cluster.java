@@ -44,7 +44,7 @@ public class Cluster implements Iterable<Integer>, Comparable<Cluster>, Serializ
      *
      * @param centroid La {@link Tuple} che funge da centroide per questo cluster.
      */
-    Cluster(Tuple centroid) {
+    public Cluster(Tuple centroid) {
         this.centroid = centroid;
         this.clusteredData = new HashSet<>();
     }
@@ -65,7 +65,7 @@ public class Cluster implements Iterable<Integer>, Comparable<Cluster>, Serializ
      * @return {@code true} se l'indice non era già presente e viene aggiunto,
      * {@code false} altrimenti.
      */
-    boolean addData(int id) {
+    public boolean addData(int id) {
         return clusteredData.add(id);
     }
 

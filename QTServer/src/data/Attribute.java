@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @see DiscreteAttribute
  * @see ContinuousAttribute
  */
-abstract class Attribute implements Serializable {
+public abstract class Attribute implements Serializable {
 
     /**
      * Identificativo di versione per la serializzazione.

@@ -98,6 +98,25 @@ public class Data {
             }
         }
     }
+    
+    /**
+     * Costruttore di supporto per la creazione di un dataset in memoria.
+     * <p>
+     * Questo costruttore è stato introdotto specificamente per facilitare i test di integrazione,
+     * in particolare per la classe {@link test.QTMinerTest}. Permette di istanziare un oggetto
+     * {@code Data} con un set di dati predefinito, evitando la necessità di una connessione
+     * al database e rendendo i test più veloci, isolati e affidabili.
+     * </p>
+     *
+     * @param data Lista di {@link Example} che costituisce il dataset fittizio.
+     * @param explanatorySet Lista di {@link Attribute} che descrive lo schema dei dati.
+     * @see mining.QTMinerTest
+     */
+    public Data(List<Example> data, List<Attribute> explanatorySet) {
+        this.data = data;
+        this.explanatorySet = explanatorySet;
+        this.numberOfExamples = data.size();
+    }
 
 
     /**
